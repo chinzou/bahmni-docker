@@ -1,12 +1,11 @@
-env:
-  - DOCKER_COMPOSE_VERSION=1.4.2
 os: 
   - linux
 arch: 
   - arm64
-  - amd64
-services: 
+services:
   - docker
+
 before_install: 
   - bash docker_push.sh
+
 script: bash echo "done"
