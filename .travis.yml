@@ -9,9 +9,6 @@ dist: bionic
 services: 
   - docker
 
-before_install:
-  - docker-compose -p $TRAVIS_COMMIT build -q
-
 deploy:
   provider: script
   script: bash .travis/docker_push.sh
