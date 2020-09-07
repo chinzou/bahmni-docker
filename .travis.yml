@@ -8,4 +8,6 @@ arch:
 dist: bionic
 services: 
   - docker
-script: bash .travis/docker_push.sh
+before_install: 
+  - bash .travis/docker_push.sh
+script: bash pwd
