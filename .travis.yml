@@ -8,9 +8,4 @@ arch:
 dist: bionic
 services: 
   - docker
-
-deploy:
-  provider: script
-  script: bash .travis/docker_push.sh
-  on:
-    branch: INFRA-243
+script: bash .travis/docker_push.sh
