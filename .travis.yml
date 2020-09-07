@@ -9,5 +9,5 @@ dist: bionic
 services: 
   - docker
 before_install: 
-  - bash .travis/docker_push.sh
+  - bash docker_push.sh
 script: bash pwd
