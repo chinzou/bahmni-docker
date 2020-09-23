@@ -14,7 +14,7 @@ RUN npm install -g less \
 RUN addgroup odoo && adduser odoo --shel /bin/sh --gecos "" --disabled-password --ingroup odoo  \
     && echo "odoo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
     && mkdir -p /opt
-RUN wget https://nightly.odoo.com/10.0/nightly/src/odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz -q \
+RUN wget https://nightly.odoo.com/10.0/nightly/src/odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz -q
 RUN tar -xzf odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz -C /opt > /dev/null \
     && rm odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz
 RUN cd /opt/odoo-${ODOO_VERSION}.post${ODOO_RELEASE} \
