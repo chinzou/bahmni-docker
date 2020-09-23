@@ -16,10 +16,10 @@ RUN addgroup odoo && adduser odoo --shel /bin/sh --gecos "" --disabled-password 
     && mkdir -p /opt \
     && wget https://nightly.odoo.com/10.0/nightly/src/odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz -q \
     && tar -xzf odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz -C /opt >/dev/null \
-    && rm odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz \
-    && cd /opt/odoo-${ODOO_VERSION}.post${ODOO_RELEASE} \
-    && pip install -r requirements.txt >/dev/null \
-    && python setup.py install > /dev/null \
+    && rm odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz
+RUN cd /opt/odoo-${ODOO_VERSION}.post${ODOO_RELEASE} \
+    && pip install -r requirements.txt >/dev/null
+RUN cd /opt/odoo-${ODOO_VERSION}.post${ODOO_RELEASE} && python setup.py install >/dev/null \
     && rm -r /opt/odoo-${ODOO_VERSION}.post${ODOO_RELEASE}
 
 # Copy entrypoint script and Odoo configuration file
