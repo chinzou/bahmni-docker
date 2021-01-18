@@ -246,7 +246,7 @@ services:
       ANALYTICS_DB_USER: ${ANALYTICS_DB_USER}
       ANALYTICS_DB_PASSWORD: ${ANALYTICS_DB_PASSWORD}
       #
-      CRON_TIME: "0/5 * * * *"
+      CRON_TIME: "*/5 * * * *"
     depends_on:
        - openmrs
        - mysql
@@ -396,6 +396,99 @@ services:
           - openelis
     volumes:
       - ./properties/openelis/:/etc/properties/
+  
+  pacs-integration:
+    build: pacs-integration/
+    environment:
+      POSTGRES_DB_SERVER: postgresql
+      OPENMRS_HOST: openmrs
+    networks:
+      bahmni:
+        aliases:
+          - pacs-integration
+
+  # ldap:
+  #   image: dcm4che/slapd-dcm4chee:2.4.50-23.0
+  #   logging:
+  #     driver: json-file
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - "389:389"
+  #   env_file: dcm4chee.env
+  #   volumes:
+  #     - /var/local/dcm4chee-arc/ldap:/var/lib/openldap/openldap-data
+  #     - /var/local/dcm4chee-arc/slapd.d:/etc/openldap/slapd.d
+  #   networks:
+  #     bahmni:
+  #       aliases:
+  #         - ldap
+  
+  # db:
+  #   image: dcm4che/postgres-dcm4chee:13.1-23
+  #   logging:
+  #     driver: json-file
+  #     options:
+  #       max-size: "10m"
+  #   env_file: dcm4chee.env
+  #   volumes:
+  #     - dcm4chee-db:/var/lib/postgresql/data
+  #   networks:
+  #     bahmni:
+  #       aliases:
+  #         - db
+  
+  # dcm4chee:
+  #   image: dcm4che/dcm4chee-arc-psql:5.23.0
+  #   logging:
+  #     driver: json-file
+  #     options:
+  #       max-size: "10m"
+  #   ports:
+  #     - "8080:8080"
+  #     - "8443:8443"
+  #     - "9990:9990"
+  #     - "9993:9993"
+  #     - "11112:11112"
+  #     - "2762:2762"
+  #     - "2575:2575"
+  #     - "12575:12575"
+  #   env_file: dcm4chee.env
+  #   environment:
+  #     WILDFLY_CHOWN: /opt/wildfly/standalone /storage
+  #     WILDFLY_WAIT_FOR: ldap:389 db:5432
+  #   depends_on:
+  #     - ldap
+  #     - db
+  #   volumes:
+  #     - /var/local/dcm4chee-arc/wildfly:/opt/wildfly/standalone
+  #     - /var/local/dcm4chee-arc/storage:/storage
+  #   networks:
+  #     bahmni:
+  #       aliases:
+  #         - dcm4chee
+
+  dcm4chee:
+    build: dcm4chee/
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+    environment:
+      POSTGRES_HOST: postgresql
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: pacs
+    networks:
+      bahmni:
+        aliases:
+          - dcm4chee
+    depends_on:
+      - postgresql
+    ports:
+      - "8080:8080"
+      - "11112:11112"
+    volumes:
+      - dcm4chee-storage:/storage
 
 version: "3.7"
 volumes:
@@ -414,5 +507,7 @@ volumes:
   odoo-config: ~
   odoo-filestore: ~
   bahmni-reports-data: ~
+  dcm4chee-storage: ~
+  dcm4chee-db: ~
 networks:
   bahmni:
