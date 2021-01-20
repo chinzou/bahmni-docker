@@ -177,8 +177,8 @@
         <!-- Use ORB-24 as Scheduled Station Name -->
         <xsl:call-template name="attr">
             <xsl:with-param name="tag" select="'00400010'"/>
-            <xsl:with-param name="vr" select="'SH'"/>
-            <xsl:with-param name="val" select="string(field[24]/text())"/>
+            <xsl:with-param name="vr" select="'1234'"/>
+            <xsl:with-param name="val" select="string(field[4]/component[0]/text())"/>
         </xsl:call-template>
         <!-- Scheduled Performing Physican Name -->
         <xsl:call-template name="cn2pnAttr">
@@ -247,8 +247,13 @@
         <!-- Use ORB-24 as Scheduled Station Name -->
         <xsl:call-template name="attr">
             <xsl:with-param name="tag" select="'00400010'"/>
-            <xsl:with-param name="vr" select="'SH'"/>
+            <xsl:with-param name="vr" select="'AE'"/>
             <xsl:with-param name="val" select="string(field[24]/text())"/>
+        </xsl:call-template>
+        <xsl:call-template name="attr">
+            <xsl:with-param name="tag" select="'00400001'"/>
+            <xsl:with-param name="vr" select="'AE'"/>
+            <xsl:with-param name="val" select="'TEST'"/>
         </xsl:call-template>
         <!-- Scheduled Performing Physican Name -->
         <xsl:call-template name="cn2pnAttr">
