@@ -80,6 +80,7 @@ services:
           - bahmni-home-1
     volumes:
       - "${BAHMNI_HOME_PATH:-bahmni-home}:/var/www/"
+      - "bahmni-images:/home/bahmni/patient_images"
       - ./properties/apache/httpd-8904.conf:/usr/local/apache2/conf/httpd.conf
 
   # Appointments
@@ -161,6 +162,7 @@ services:
       - "${OPENMRS_CONFIG_CHECKSUMS_PATH:-openmrs-config-checksums}:/usr/local/tomcat/.OpenMRS/configuration_checksums/"
       - "${BAHMNI_HOME_PATH:-bahmni-home}/:/home/bahmni/"
       - "${BAHMNI_OBSCALCULATOR_PATH:-bahmni-obscalculator}:/usr/local/tomcat/.OpenMRS/obscalculator/"
+      - "bahmni-images:/home/bahmni/patient_images"
       - ./properties/openmrs/:/etc/properties/
 
   # MySQL
@@ -407,67 +409,6 @@ services:
         aliases:
           - pacs-integration
 
-  # ldap:
-  #   image: dcm4che/slapd-dcm4chee:2.4.50-23.0
-  #   logging:
-  #     driver: json-file
-  #     options:
-  #       max-size: "10m"
-  #   ports:
-  #     - "389:389"
-  #   env_file: dcm4chee.env
-  #   volumes:
-  #     - /var/local/dcm4chee-arc/ldap:/var/lib/openldap/openldap-data
-  #     - /var/local/dcm4chee-arc/slapd.d:/etc/openldap/slapd.d
-  #   networks:
-  #     bahmni:
-  #       aliases:
-  #         - ldap
-  
-  # db:
-  #   image: dcm4che/postgres-dcm4chee:13.1-23
-  #   logging:
-  #     driver: json-file
-  #     options:
-  #       max-size: "10m"
-  #   env_file: dcm4chee.env
-  #   volumes:
-  #     - dcm4chee-db:/var/lib/postgresql/data
-  #   networks:
-  #     bahmni:
-  #       aliases:
-  #         - db
-  
-  # dcm4chee:
-  #   image: dcm4che/dcm4chee-arc-psql:5.23.0
-  #   logging:
-  #     driver: json-file
-  #     options:
-  #       max-size: "10m"
-  #   ports:
-  #     - "8080:8080"
-  #     - "8443:8443"
-  #     - "9990:9990"
-  #     - "9993:9993"
-  #     - "11112:11112"
-  #     - "2762:2762"
-  #     - "2575:2575"
-  #     - "12575:12575"
-  #   env_file: dcm4chee.env
-  #   environment:
-  #     WILDFLY_CHOWN: /opt/wildfly/standalone /storage
-  #     WILDFLY_WAIT_FOR: ldap:389 db:5432
-  #   depends_on:
-  #     - ldap
-  #     - db
-  #   volumes:
-  #     - /var/local/dcm4chee-arc/wildfly:/opt/wildfly/standalone
-  #     - /var/local/dcm4chee-arc/storage:/storage
-  #   networks:
-  #     bahmni:
-  #       aliases:
-  #         - dcm4chee
-
   dcm4chee:
     build: dcm4chee/
     logging:
@@ -492,6 +433,7 @@ services:
 
 version: "3.7"
 volumes:
+  bahmni-images: ~
   openmrs-data: ~
   mysql-data: ~
   openmrs-config: ~
