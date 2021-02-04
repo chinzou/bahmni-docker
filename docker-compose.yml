@@ -401,9 +401,14 @@ services:
   
   pacs-integration:
     build: pacs-integration/
+    depends_on:
+      - postgresql
     environment:
       POSTGRES_DB_SERVER: postgresql
       OPENMRS_HOST: openmrs
+      POSTGRES_DB: pacsdb
+      POSTGRES_USER: pacs
+      POSTGRES_PASSWORD: password
     networks:
       bahmni:
         aliases:
@@ -419,6 +424,7 @@ services:
       POSTGRES_HOST: postgresql
       POSTGRES_PASSWORD: password
       POSTGRES_USER: pacs
+      STORAGE_DIR: /storage/fs1
     networks:
       bahmni:
         aliases:
